@@ -1,9 +1,9 @@
 defmodule Exlivery.Users.AgentTest do
   use ExUnit.Case
 
-  alias Exlivery.Users.Agent, as: UserAgent
-  alias Exlivery.Users.User
   import Exlivery.Factory
+
+  alias Exlivery.Users.Agent, as: UserAgent
 
   describe "save/1" do
     test "saves the user" do
@@ -23,21 +23,13 @@ defmodule Exlivery.Users.AgentTest do
     end
 
     test "when the user is found, returns the user", %{cpf: cpf} do
-      :user
-      |> build(cpf: cpf)
-      |> UserAgent.save()
+      user = build(:user, cpf: cpf)
+
+      UserAgent.save(user)
 
       response = UserAgent.get(cpf)
 
-      expected =
-        {:ok,
-         %User{
-           address: "Rua das Bananas",
-           age: 26,
-           cpf: "123454556777",
-           email: "hugo@banana.com",
-           name: "Hugo"
-         }}
+      expected = {:ok, user}
 
       assert response == expected
     end
